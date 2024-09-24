@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Your Talents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e0e0e0;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 80%;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 30px;
+            background: #f0f0f0;
+            box-shadow: 10px 10px 30px #c8c8c8, -10px -10px 30px #ffffff;
+            animation: slideDown 1s ease-in-out forwards;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        button {
+            background-color: #e0e0e0;
+            color: #555;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 6px 6px 20px #bebebe, -6px -6px 20px #ffffff;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+        }
+
+        button:hover {
+            box-shadow: 4px 4px 16px #bebebe, -4px -4px 16px #ffffff;
+            transform: scale(1.05);
+        }
+
+        .quiz, .result, .advice {
+            display: none;
+        }
+
+        .quiz.active, .result.active, .advice.active {
+            display: block;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .advice {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .advice p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome active">
+            <h1>Welcome, Mahi!</h1>
+            <p>You’re amazing in so many ways. Let's discover where your true talents lie!</p>
+            <button onclick="startQuiz()">Start Your Journey</button>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="quiz">
+            <p>What's your favorite way to spend time?</p>
+            <div class="cards">
+                <div class="card" onclick="showResult('creative')">
+                    <h2>Creative Activities</h2>
+                    <p>Painting, drawing, writing, designing, etc.</p>
+                </div>
+                <div class="card" onclick="showResult('analytical')">
+                    <h2>Analytical Thinking</h2>
+                    <p>Solving puzzles, analyzing data, playing strategy games.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result" class="result">
+            <h1>Your Talent Is...</h1>
+            <p id="talent"></p>
+            <button onclick="showAdvice()">Get Advice on How to Improve</button>
+        </div>
+
+        <!-- Advice Section -->
+        <div id="advice" class="advice">
+            <h1>Advice to Improve</h1>
+            <div id="adviceContent"></div>
+            <button onclick="startQuiz()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        function startQuiz() {
+            document.querySelector('.welcome').classList.remove('active');
+            document.getElementById('quiz').classList.add('active');
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('advice').classList.remove('active');
+        }
+
+        function showResult(talentType) {
+            document.getElementById('quiz').classList.remove('active');
+            document.getElementById('result').classList.add('active');
+
+            let talentMessage = '';
+
+            if (talentType === 'creative') {
+                talentMessage = 'You have an amazing creative mind! Try exploring design, writing, or visual arts!';
+            } else if (talentType === 'analytical') {
+                talentMessage = 'Your analytical skills are impressive! You may enjoy problem-solving, coding, or finance!';
+            }
+
+            document.getElementById('talent').textContent = talentMessage;
+        }
+
+        function showAdvice() {
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('advice').classList.add('active');
+
+            let adviceContent = '';
+
+            if (document.getElementById('talent').textContent.includes('creative')) {
+                adviceContent = `
+                    <p><strong>Practice:</strong> The best way to improve your creative skills is through regular practice. Set aside time each day to work on your art, writing, or designs.</p>
+                    <p><strong>Explore:</strong> Don't limit yourself to one form of creativity. Experiment with different mediums—digital art, painting, graphic design, and more!</p>
+                    <p><strong>Learn from Others:</strong> Follow tutorials, study the work of creative experts, and immerse yourself in the creative world for new ideas and techniques.</p>
+                `;
+            } else if (document.getElementById('talent').textContent.includes('analytical')) {
+                adviceContent = `
+                    <p><strong>Sharpen Your Skills:</strong> Engage with puzzles, complex problems, and logical games like chess or coding challenges to enhance your analytical thinking.</p>
+                    <p><strong>Set Goals:</strong> Establish small milestones for yourself in areas like coding, data analysis, or problem-solving, and track your progress over time.</p>
+                    <p><strong>Take Courses:</strong> Invest in online courses or books that help you build a stronger analytical foundation—such as programming, math, or finance.</p>
+                `;
+            }
+
+            document.getElementById('adviceContent').innerHTML = adviceContent;
+        }
+    </script>
+
+</body>
+</html>
